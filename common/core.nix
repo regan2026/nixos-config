@@ -2,7 +2,7 @@
 
 {
   hardware.enableRedistributableFirmware = true;
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"
@@ -59,7 +59,7 @@
     keepassxc
   ];
 
-  services.gnome.core-utilities.enable = false;
+  services.gnome.core-apps.enable = false;
   environment.gnome.excludePackages = with pkgs; [
     # The classics
     baobab
@@ -91,11 +91,13 @@
     simple-scan
   ];
 
+  programs.bash.enable = true;
+
   programs.bash.shellAliases = {
     nixconf = "codium /etc/nixos/";
     editconf = "codium /etc/nixos/common/core.nix";
     edithost = "codium /etc/nixos/hosts/nixos-pc/configuration.nix";
-    upconf = "sudo nixos-rebuild switch --flake /etc/nixos#nixos-pc";
+    upconf = "sudo nixos-rebuild switch --flake .#nixos-pc";
     clean = "nix-collect-garbage -d && sudo nix-store --optimise";
   };
 }
