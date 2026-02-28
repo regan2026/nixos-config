@@ -1,0 +1,10 @@
+# Ignore Nix build results
+result
+result-*
+
+# Ignore temporary swap files
+*.swp
+*~
+
+# Ignore sensitive hardware secrets (if you ever make the repo public)
+secrets.nix
