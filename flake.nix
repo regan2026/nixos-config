@@ -1,31 +1,30 @@
 {
-  description = "Regan's NixOS Flake Configuration";
+  description = "Regan's Universal NixOS Configuration";
 
   inputs = {
-    # The NixOS system source (locked to 25.11 Xantusia)
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-
-    # Home Manager (for your GNOME extensions and Codium)
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    inputs@{ nixpkgs, home-manager, ... }:
+    { nixpkgs, home-manager, ... }@inputs:
+    let
+      system = "x86_64-linux";
+    in
     {
-      # NOTE: 'nixos' here must match your networking.hostName in configuration.nix
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+      nixosConfigurations.nixos-pc = nixpkgs.lib.nixosSystem {
+        inherit system;
         specialArgs = { inherit inputs; };
         modules = [
-          ./configuration.nix
-          # This connects Home Manager to your Flake
+          # FIX: Matches your folder name
+          ./hosts/nixos-pc/configuration.nix
+          ./common/core.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            # This imports your separate home.nix file
-            home-manager.users.regan = import ./home.nix;
+            home-manager.users.regan = import ./common/home.nix;
           }
         ];
       };
