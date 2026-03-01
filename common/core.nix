@@ -35,6 +35,7 @@
 
   users.users.regan = {
     isNormalUser = true;
+    description = "regan";
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -90,14 +91,17 @@
     gnome-connections
     simple-scan
   ];
-
   programs.bash.enable = true;
-
   programs.bash.shellAliases = {
     nixconf = "codium /etc/nixos/";
+    # Edit the common core
     editconf = "codium /etc/nixos/common/core.nix";
-    edithost = "codium /etc/nixos/hosts/nixos-pc/configuration.nix";
-    upconf = "sudo nixos-rebuild switch --flake /etc/nixos#nixos-pc"; # Absolute path is safer
+    # This now opens the folder for WHATEVER host you are on
+    edithost = "codium /etc/nixos/hosts/$(hostname)/configuration.nix";
+
+    # SMART REBUILD: This detects your hostname and builds the right flake automatically!
+    upconf = "sudo nixos-rebuild switch --flake /etc/nixos#$(hostname)";
+
     pushconfig = "cd /etc/nixos && sudo git add . && sudo git commit -m 'Update Config' && sudo git push";
     clean = "nix-collect-garbage -d && sudo nix-store --optimise";
   };
