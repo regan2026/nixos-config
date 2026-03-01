@@ -96,13 +96,13 @@
     nixconf = "codium /etc/nixos/";
     # Edit the common core
     editconf = "codium /etc/nixos/common/core.nix";
-    # This now opens the folder for WHATEVER host you are on
+    # This automatically opens the correct folder for the current machine:
     edithost = "codium /etc/nixos/hosts/$(hostname)/configuration.nix";
 
-    # SMART REBUILD: This detects your hostname and builds the right flake automatically!
+    # This automatically builds the correct configuration for the current machine:
     upconf = "sudo nixos-rebuild switch --flake /etc/nixos#$(hostname)";
 
-    pushconfig = "cd /etc/nixos && sudo git add . && sudo git commit -m 'Update Config' && sudo git push";
+    pushconfig = "cd /etc/nixos && sudo git add . && sudo git commit -m 'Update' && sudo git push";
     clean = "nix-collect-garbage -d && sudo nix-store --optimise";
   };
 }
