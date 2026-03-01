@@ -96,9 +96,13 @@
   programs.bash.shellAliases = {
     nixconf = "codium /etc/nixos/";
     editconf = "codium /etc/nixos/common/core.nix";
-    edithost = "codium /etc/nixos/hosts/nixos-pc/configuration.nix";
-    upconf = "sudo nixos-rebuild switch --flake /etc/nixos#nixos-pc"; # Absolute path is safer
-    pushconfig = "cd /etc/nixos && sudo git add . && sudo git commit -m 'Update Config' && sudo git push";
+    # This automatically opens the correct folder for the current machine:
+    edithost = "codium /etc/nixos/hosts/$(hostname)/configuration.nix";
+
+    # This automatically builds the correct configuration for the current machine:
+    upconf = "sudo nixos-rebuild switch --flake /etc/nixos#$(hostname)";
+
+    pushconfig = "cd /etc/nixos && sudo git add . && sudo git commit -m 'Update' && sudo git push";
     clean = "nix-collect-garbage -d && sudo nix-store --optimise";
   };
 }
