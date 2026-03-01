@@ -97,7 +97,8 @@
     nixconf = "codium /etc/nixos/";
     editconf = "codium /etc/nixos/common/core.nix";
     edithost = "codium /etc/nixos/hosts/nixos-pc/configuration.nix";
-    upconf = "sudo nixos-rebuild switch --flake .#nixos-pc";
+    upconf = "sudo nixos-rebuild switch --flake /etc/nixos#nixos-pc"; # Absolute path is safer
+    pushconfig = "cd /etc/nixos && sudo git add . && sudo git commit -m 'Update Config' && sudo git push";
     clean = "nix-collect-garbage -d && sudo nix-store --optimise";
   };
 }
